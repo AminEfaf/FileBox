@@ -263,6 +263,208 @@
             border: 1px solid #ccc;
         }
 
+        /* Video modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            position: relative;
+            margin: 5% auto;
+            width: 90%;
+            max-width: 800px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .modal video {
+            width: 100%;
+            height: auto;
+            max-height: 70vh;
+        }
+
+        .modal-header {
+            background: #333;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Action Modal Styles */
+        .action-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .action-modal-content {
+            position: relative;
+            margin: 15% auto;
+            width: 90%;
+            max-width: 400px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-modal-header {
+            background: #1976d2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .action-modal-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.3;
+            padding-right: 40px; /* Space for close button */
+        }
+
+        .action-close-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .action-close-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .action-modal-body {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .action-modal-body p {
+            margin: 0 0 25px 0;
+            color: #666;
+            font-size: 16px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .action-btn {
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-height: 50px;
+            box-sizing: border-box;
+        }
+
+        .stream-action {
+            background: #e91e63;
+            color: white;
+        }
+
+        .stream-action:hover {
+            background: #c2185b;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(233,30,99,0.3);
+        }
+
+        .download-action {
+            background: #4caf50;
+            color: white;
+        }
+
+        .download-action:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76,175,80,0.3);
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .container {
@@ -300,10 +502,19 @@
 
             .file-list li {
                 gap: 10px;
+                flex-wrap: wrap;
             }
 
             .file-list a {
                 font-size: 14px;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .file-list .file-size {
+                order: 1;
+                margin-left: 0;
+                margin-right: auto;
             }
 
             .upload-stats {
@@ -315,39 +526,46 @@
             .current-file {
                 font-size: 13px;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .modal-header {
+                padding: 10px 15px;
+            }
+
+            .modal-title {
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
-            body {
-                padding: 10px;
+            .action-modal-content {
+                width: 95%;
+                margin: 20% auto;
             }
-
-            .container {
+            
+            .action-modal-header {
                 padding: 15px;
-                border-radius: 8px;
             }
+            
+            .action-modal-title {
+                font-size: 14px;
+                padding-right: 35px;
+            }
+            
+            .action-modal-body {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
 
-            h1 {
-                font-size: 24px;
-                margin-bottom: 15px;
-            }
-
-            .preview-container {
-                max-height: 200px;
-            }
-
-            .preview-card {
-                padding: 8px;
-            }
-
-            .file-name {
-                font-size: 13px;
-            }
-
-            .thumb {
-                width: 40px;
-                height: 40px;
-            }
         }
     </style>
 </head>
@@ -355,6 +573,26 @@
     <!-- Global progress bar -->
     <div id="topUploadBarContainer">
         <div id="topUploadBar"></div>
+    </div>
+
+    <!-- Action Modal -->
+    <div id="actionModal" class="action-modal">
+        <div class="action-modal-content">
+            <div class="action-modal-header">
+                <h3 class="action-modal-title" id="actionModalTitle">Choose Action</h3>
+                <button class="action-close-btn" onclick="closeActionModal()">&times;</button>
+            </div>
+            <div class="action-modal-body">
+                <div class="action-buttons">
+                    <button class="action-btn stream-action" id="confirmStreamBtn">
+                        Stream
+                    </button>
+                    <a class="action-btn download-action" id="confirmDownloadBtn">
+                        Download
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="container">
@@ -399,9 +637,25 @@
                         {% if file.thumbnail %}
                             <img src="{{ file.thumbnail }}" alt="thumbnail" class="thumb" />
                         {% else %}
-                            <span class="file-icon">{{ file.name.split('.')[-1]|lower|default('📁') }}</span>
+                            <span class="file-icon" data-ext="{{ file.extension }}">
+                                {% if file.extension in ['mp4', 'mkv', 'avi', 'mov', 'wmv', 'flv', 'webm', 'm4v', '3gp', 'ogv'] %}🎞️
+                                {% elif file.extension in ['jpg', 'jpeg', 'png', 'gif'] %}🖼️
+                                {% elif file.extension == 'pdf' %}📄
+                                {% elif file.extension in ['txt', 'doc', 'docx'] %}📄
+                                {% elif file.extension in ['xls', 'xlsx', 'ppt', 'pptx'] %}📊
+                                {% elif file.extension in ['mp3', 'wav'] %}🎵
+                                {% elif file.extension in ['zip', 'rar'] %}🗜️
+                                {% else %}📁
+                                {% endif %}
+                            </span>
                         {% endif %}
-                        <a href="/download/{{ file.name | urlencode }}" title="{{ file.name }}">{{ file.name }}</a>
+                        
+                        {% if file.is_video %}
+                            <a href="#" onclick="showActionModal('{{ file.name | urlencode }}', '{{ file.name }}'); return false;" title="{{ file.name }}">{{ file.name }}</a>
+                        {% else %}
+                            <a href="/download/{{ file.name | urlencode }}" title="{{ file.name }}">{{ file.name }}</a>
+                        {% endif %}
+                        
                         <span class="file-size">{{ file.size }}</span>
                     </li>
                 {% endfor %}
@@ -409,6 +663,19 @@
                 <li class="empty">No files yet</li>
             {% endif %}
         </ul>
+    </div>
+
+    <!-- Video streaming modal -->
+    <div id="videoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Video Player</div>
+                <button class="close-btn" onclick="closeVideoModal()">&times;</button>
+            </div>
+            <video id="modalVideo" controls>
+                Your browser does not support the video tag.
+            </video>
+        </div>
     </div>
 
 <script>
@@ -427,6 +694,83 @@
     const fileList = document.getElementById("fileList");
 
     let isUploading = false;
+
+    // Action modal functions
+    function showActionModal(encodedFilename, displayName) {
+        const modal = document.getElementById('actionModal');
+        const title = document.getElementById('actionModalTitle');
+        const streamBtn = document.getElementById('confirmStreamBtn');
+        const downloadBtn = document.getElementById('confirmDownloadBtn');
+        
+        title.textContent = displayName;
+        downloadBtn.href = `/download/${encodedFilename}`;
+        
+        streamBtn.onclick = function() {
+            closeActionModal();
+            streamVideo(encodedFilename, displayName);
+        };
+        
+        modal.style.display = 'block';
+    }
+
+    function closeActionModal() {
+        const modal = document.getElementById('actionModal');
+        modal.style.display = 'none';
+    }
+
+    // Video streaming functions
+    function streamVideo(encodedFilename, displayName) {
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('modalVideo');
+        const title = document.getElementById('modalTitle');
+        
+        title.textContent = displayName;
+        video.src = `/stream/${encodedFilename}`;
+        modal.style.display = 'block';
+        
+        // Play video automatically
+        video.play().catch(e => {
+            console.log('Auto-play prevented:', e);
+        });
+    }
+
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const video = document.getElementById('modalVideo');
+        
+        video.pause();
+        video.src = '';
+        modal.style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const videoModal = document.getElementById('videoModal');
+        const actionModal = document.getElementById('actionModal');
+        
+        if (event.target == videoModal) {
+            closeVideoModal();
+        }
+        if (event.target == actionModal) {
+            closeActionModal();
+        }
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeVideoModal();
+            closeActionModal();
+        }
+    });
+
+    function isVideoFile(filename) {
+        const videoExts = ['mp4', 'avi', 'mov', 'wmv', 'flv', 'webm', 'mkv', 
+                          'm4v', '3gp', 'ogv', 'ts', 'm2ts', 'mts', 'vob', 
+                          'asf', 'rm', 'rmvb', 'divx', 'xvid'];
+        const ext = filename.split('.').pop().toLowerCase();
+        return videoExts.includes(ext);
+    }
 
     input.addEventListener("change", () => {
         filePreview.innerHTML = "";
@@ -473,7 +817,9 @@
             pdf: "📄", txt: "📄", doc: "📄", docx: "📄",
             xls: "📊", xlsx: "📊", ppt: "📊", pptx: "📊",
             jpg: "🖼️", jpeg: "🖼️", png: "🖼️", gif: "🖼️",
-            mp4: "🎞️", mkv: "🎞️", mp3: "🎵", wav: "🎵",
+            mp4: "🎞️", mkv: "🎞️", avi: "🎞️", mov: "🎞️", wmv: "🎞️", 
+            flv: "🎞️", webm: "🎞️", m4v: "🎞️", '3gp': "🎞️", ogv: "🎞️",
+            mp3: "🎵", wav: "🎵",
             zip: "🗜️", rar: "🗜️"
         };
         return icons[ext] || "📁";
@@ -493,6 +839,53 @@
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+    }
+
+    function addFileToList(file) {
+        const newItem = document.createElement("li");
+
+        const ext = file.name.split('.').pop().toLowerCase();
+        const imageExts = ['png', 'jpg', 'jpeg', 'gif'];
+        
+        if (imageExts.includes(ext)) {
+            const img = document.createElement('img');
+            img.src = `/thumbnail/${encodeURIComponent(file.name)}`;
+            img.alt = 'thumbnail';
+            img.classList.add('thumb');
+            newItem.appendChild(img);
+        } else {
+            const icon = document.createElement('span');
+            icon.classList.add('file-icon');
+            icon.setAttribute('data-ext', ext);
+            icon.textContent = getFileIcon(file.name);
+            newItem.appendChild(icon);
+        }
+
+        const link = document.createElement('a');
+        if (isVideoFile(file.name)) {
+            link.href = '#';
+            link.onclick = function() {
+                showActionModal(encodeURIComponent(file.name), file.name);
+                return false;
+            };
+        } else {
+            link.href = `/download/${encodeURIComponent(file.name)}`;
+        }
+        link.textContent = file.name;
+        link.title = file.name;
+        newItem.appendChild(link);
+
+        const sizeSpan = document.createElement('span');
+        sizeSpan.classList.add('file-size');
+        sizeSpan.textContent = formatFileSize(file.size);
+        newItem.appendChild(sizeSpan);
+
+        const emptyPlaceholder = fileList.querySelector('.empty');
+        if (emptyPlaceholder) {
+            emptyPlaceholder.remove();
+        }
+        
+        fileList.insertBefore(newItem, fileList.firstChild);
     }
 
     form.addEventListener("submit", function (e) {
@@ -554,43 +947,7 @@
 
             xhr.onload = function () {
                 if (xhr.status >= 200 && xhr.status < 300) {
-                    // Remove empty placeholder if it exists
-                    const emptyPlaceholder = fileList.querySelector('.empty');
-                    if (emptyPlaceholder) {
-                        emptyPlaceholder.remove();
-                    }
-
-                    // Add new file to the list
-                    const newItem = document.createElement("li");
-
-                    const ext = file.name.split('.').pop().toLowerCase();
-                    const imageExts = ['png', 'jpg', 'jpeg', 'gif'];
-                    if (imageExts.includes(ext)) {
-                        const img = document.createElement('img');
-                        img.src = `/thumbnail/${encodeURIComponent(file.name)}`;
-                        img.alt = 'thumbnail';
-                        img.classList.add('thumb');
-                        newItem.appendChild(img);
-                    } else {
-                        const icon = document.createElement('span');
-                        icon.classList.add('file-icon');
-                        icon.textContent = getFileIcon(file.name);
-                        newItem.appendChild(icon);
-                    }
-
-                    const link = document.createElement('a');
-                    link.href = `/download/${encodeURIComponent(file.name)}`;
-                    link.textContent = file.name;
-                    link.title = file.name;
-                    newItem.appendChild(link);
-
-                    const sizeSpan = document.createElement('span');
-                    sizeSpan.classList.add('file-size');
-                    sizeSpan.textContent = formatFileSize(file.size);
-                    newItem.appendChild(sizeSpan);
-
-                    fileList.insertBefore(newItem, fileList.firstChild);
-
+                    addFileToList(file);
                     uploaded++;
                     if (uploaded < total) {
                         // Continue with next file
