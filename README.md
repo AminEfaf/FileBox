@@ -93,8 +93,8 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 *Clean and modern desktop interface*
 
 ### Mobile Interface  
-![IMG_3387](https://github.com/user-attachments/assets/8497aaa2-2ebf-4960-a3f5-2d201424a8c4)
-*Responsive mobile design optimized for touch interactions*
+<img src="https://github.com/user-attachments/assets/8497aaa2-2ebf-4960-a3f5-2d201424a8c4" alt="Mobile UI" width="300" />
+<p><em>Responsive mobile design optimized for touch interactions</em></p>
 
 ### Upload Progress
 ![IMG_3388](https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720)
