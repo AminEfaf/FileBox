@@ -43,7 +43,7 @@ This project focuses on providing a **clean, responsive UI/UX** with robust back
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -97,7 +97,7 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 <p><em>Responsive mobile design optimized for touch interactions</em></p>
 
 ### Upload Progress
-<img src="(https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720" alt="Mobile UI" width="300" />
+<img src="https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720" alt="Upload progress" width="300" />
 <p><em>Real-time upload progress with speed and ETA indicators</em></p>
 
 ---
