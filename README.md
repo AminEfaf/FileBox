@@ -23,7 +23,6 @@ This project focuses on providing a **clean, responsive UI/UX** with robust back
 2. **Smart File Management**
    - Automatic duplicate file handling with incremental naming
    - Secure filename sanitization
-   - File size formatting and validation
 
 3. **Image Processing**
    - Automatic thumbnail generation for images
@@ -119,7 +118,6 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 ### File Management
 - **Upload Directory**: `uploads/` (auto-created)
 - **Thumbnails**: `static/thumbnails/` (auto-created)
-- **Max File Size**: 100MB (configurable)
 - **Supported Formats**: All file types with special handling for images
 
 ---
@@ -130,13 +128,9 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 ```bash
 # Optional: Set custom upload folder
 UPLOAD_FOLDER=/path/to/uploads
-
-# Optional: Set maximum file size (in bytes)
-MAX_CONTENT_LENGTH=104857600  # 100MB
 ```
 
 ### Customization Options
-- Modify `MAX_CONTENT_LENGTH` in `app.py` for different file size limits
 - Update thumbnail size in `create_thumbnail()` function
 - Customize styling in `static/css/main.css`
 - Add new file type icons in `main.js`
