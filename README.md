@@ -97,8 +97,8 @@ gunicorn -w 4 -b 0.0.0.0:8000 app:app
 <p><em>Responsive mobile design optimized for touch interactions</em></p>
 
 ### Upload Progress
-![IMG_3388](https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720)
-*Real-time upload progress with speed and ETA indicators*
+<img src="(https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720" alt="Mobile UI" width="300" />
+<p><em>Real-time upload progress with speed and ETA indicators</em></p>
 
 ---
 
