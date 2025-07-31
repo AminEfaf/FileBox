@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Amin's FileBox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        /* Base layout */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #fefefe;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at center, #4ca5af, transparent 70%);
+            filter: blur(80px);
+            opacity: 0.15;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+
+        /* Global top upload bar */
+        #topUploadBarContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 100%;
+            background: rgba(0,0,0,0.06);
+            transform: translateY(-100%);
+            transition: transform 0.25s ease;
+            z-index: 9999;
+        }
+        #topUploadBarContainer.visible {
+            transform: translateY(0);
+        }
+        #topUploadBar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4caf50, #66bb6a);
+            transition: width 0.15s ease;
+        }
+
+        /* Upload controls */
+        .upload-box { 
+            margin: 20px 0; 
+        }
+        
+        .upload-label,
+        button {
+            display: inline-block;
+            background: #ff9800;
+            color: white;
+            font-size: 16px;
+            padding: 12px 20px;
+            line-height: 1.4;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            border: none;
+            transition: background 0.2s ease;
+        }
+        
+        button { 
+            background: #4caf50; 
+        }
+        
+        button:hover { 
+            background: #45a049; 
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        input[type="file"] { 
+            display: none; 
+        }
+
+        /* Enhanced Progress Bar */
+        .progress-container {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .progress-container.visible {
+            display: block;
+        }
+
+        .progress-wrapper {
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 20px;
+            margin-bottom: 10px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #66bb6a);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .upload-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .current-file {
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* File Preview - Mobile Optimized */
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .preview-card {
+            background: #fafafa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .preview-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .file-icon {
+            font-size: 24px;
+            margin-right: 12px;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .file-info {
+            flex: 1;
+            text-align: left;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 4px;
+        }
+
+        .file-size {
+            font-size: 0.85em;
+            color: #777;
+        }
+
+        /* File list */
+        .file-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .file-list li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .file-list a {
+            color: #1976d2;
+            text-decoration: none;
+            word-break: break-word;
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .file-list a:hover { 
+            text-decoration: underline; 
+        }
+        
+        .file-list .file-size {
+            margin-left: auto;
+            font-size: 0.9em;
+            color: #555;
+            min-width: 70px;
+            text-align: right;
+            white-space: nowrap;
+        }
+        
+        .empty { 
+            color: #999; 
+            font-style: italic; 
+            text-align: center; 
+        }
+
+        /* Thumbnails */
+        .thumb {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .upload-label,
+            button {
+                font-size: 14px;
+                padding: 10px 16px;
+                display: block;
+                width: 100%;
+                margin: 8px 0;
+                box-sizing: border-box;
+            }
+
+            .preview-card {
+                padding: 10px;
+            }
+
+            .file-icon {
+                font-size: 20px;
+                min-width: 25px;
+                margin-right: 10px;
+            }
+
+            .file-name {
+                font-size: 14px;
+            }
+
+            .file-size {
+                font-size: 12px;
+            }
+
+            .file-list li {
+                gap: 10px;
+            }
+
+            .file-list a {
+                font-size: 14px;
+            }
+
+            .upload-stats {
+                flex-direction: column;
+                gap: 5px;
+                font-size: 12px;
+            }
+
+            .current-file {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            h1 {
+                font-size: 24px;
+                margin-bottom: 15px;
+            }
+
+            .preview-container {
+                max-height: 200px;
+            }
+
+            .preview-card {
+                padding: 8px;
+            }
+
+            .file-name {
+                font-size: 13px;
+            }
+
+            .thumb {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Global progress bar -->
+    <div id="topUploadBarContainer">
+        <div id="topUploadBar"></div>
+    </div>
+
+    <div class="container">
+        <h1>Amin's FileBox</h1>
+
+        <div class="upload-box">
+            <form id="uploadForm">
+                <label class="upload-label">
+                    <input
+                        type="file"
+                        name="file"
+                        id="fileInput"
+                        required
+                        multiple
+                    />
+                    Select File(s)
+                </label>
+                <button type="submit" id="uploadBtn">Upload</button>
+            </form>
+
+            <div id="filePreview"></div>
+
+            <!-- Enhanced Progress Container -->
+            <div class="progress-container" id="progressContainer">
+                <div class="current-file" id="currentFile"></div>
+                <div class="upload-stats">
+                    <span id="fileProgress">File 0 of 0</span>
+                    <span id="uploadSpeed">Speed: 0 Mbps</span>
+                    <span id="uploadETA">ETA: --</span>
+                </div>
+                <div class="progress-wrapper">
+                    <div class="progress-bar" id="progressBar">0%</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Available Files</h2>
+        <ul class="file-list" id="fileList">
+            {% if files %}
+                {% for file in files %}
+                    <li>
+                        {% if file.thumbnail %}
+                            <img src="{{ file.thumbnail }}" alt="thumbnail" class="thumb" />
+                        {% else %}
+                            <span class="file-icon">{{ file.name.split('.')[-1]|lower|default('📁') }}</span>
+                        {% endif %}
+                        <a href="/download/{{ file.name | urlencode }}" title="{{ file.name }}">{{ file.name }}</a>
+                        <span class="file-size">{{ file.size }}</span>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="empty">No files yet</li>
+            {% endif %}
+        </ul>
+    </div>
+
+<script>
+    const form = document.getElementById("uploadForm");
+    const input = document.getElementById("fileInput");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const progressContainer = document.getElementById("progressContainer");
+    const progressBar = document.getElementById("progressBar");
+    const topUploadBarContainer = document.getElementById("topUploadBarContainer");
+    const topUploadBar = document.getElementById("topUploadBar");
+    const filePreview = document.getElementById("filePreview");
+    const currentFile = document.getElementById("currentFile");
+    const fileProgress = document.getElementById("fileProgress");
+    const uploadSpeed = document.getElementById("uploadSpeed");
+    const uploadETA = document.getElementById("uploadETA");
+    const fileList = document.getElementById("fileList");
+
+    let isUploading = false;
+
+    input.addEventListener("change", () => {
+        filePreview.innerHTML = "";
+        if (input.files.length === 0) return;
+
+        const container = document.createElement("div");
+        container.classList.add("preview-container");
+
+        Array.from(input.files).forEach((file) => {
+            const card = document.createElement("div");
+            card.classList.add("preview-card");
+
+            const icon = document.createElement("div");
+            icon.classList.add("file-icon");
+            icon.textContent = getFileIcon(file.name);
+
+            const info = document.createElement("div");
+            info.classList.add("file-info");
+
+            const fileName = document.createElement("div");
+            fileName.classList.add("file-name");
+            fileName.textContent = file.name;
+            fileName.title = file.name; // Tooltip for full name
+
+            const fileSize = document.createElement("div");
+            fileSize.classList.add("file-size");
+            fileSize.textContent = formatFileSize(file.size);
+
+            info.appendChild(fileName);
+            info.appendChild(fileSize);
+
+            card.appendChild(icon);
+            card.appendChild(info);
+
+            container.appendChild(card);
+        });
+
+        filePreview.appendChild(container);
+    });
+
+    function getFileIcon(filename) {
+        const ext = filename.split(".").pop().toLowerCase();
+        const icons = {
+            pdf: "📄", txt: "📄", doc: "📄", docx: "📄",
+            xls: "📊", xlsx: "📊", ppt: "📊", pptx: "📊",
+            jpg: "🖼️", jpeg: "🖼️", png: "🖼️", gif: "🖼️",
+            mp4: "🎞️", mkv: "🎞️", mp3: "🎵", wav: "🎵",
+            zip: "🗜️", rar: "🗜️"
+        };
+        return icons[ext] || "📁";
+    }
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 B';
+        const k = 1024;
+        const sizes = ['B', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    function formatTime(seconds) {
+        seconds = Math.round(seconds);
+        if (seconds <= 0) return "--";
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+    }
+
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const files = input.files;
+        if (!files.length || isUploading) return;
+
+        isUploading = true;
+        uploadBtn.disabled = true;
+        uploadBtn.textContent = "Uploading...";
+        
+        // Show progress containers
+        progressContainer.classList.add("visible");
+        topUploadBarContainer.classList.add("visible");
+
+        let uploaded = 0;
+        const total = files.length;
+
+        const uploadNext = () => {
+            const file = files[uploaded];
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            formData.append("file", file);
+
+            let startTime = Date.now();
+
+            // Update current file info
+            currentFile.textContent = `Uploading: ${file.name}`;
+            fileProgress.textContent = `File ${uploaded + 1} of ${total}`;
+
+            xhr.open("POST", "/upload", true);
+
+            xhr.upload.onprogress = function (e) {
+                if (e.lengthComputable) {
+                    const now = Date.now();
+                    const timeElapsed = (now - startTime) / 1000;
+                    
+                    // Calculate progress percentages
+                    const filePercent = Math.round((e.loaded / e.total) * 100);
+                    const overallPercent = Math.round(((uploaded + e.loaded / e.total) / total) * 100);
+                    
+                    // Update progress bars
+                    progressBar.style.width = filePercent + "%";
+                    progressBar.textContent = filePercent + "%";
+                    topUploadBar.style.width = overallPercent + "%";
+
+                    // Calculate speed and ETA
+                    if (timeElapsed > 0) {
+                        const speedBps = e.loaded / timeElapsed;
+                        const speedMbps = (speedBps * 8) / (1024 * 1024);
+                        const remainingBytes = e.total - e.loaded;
+                        const etaSeconds = speedBps > 0 ? (remainingBytes / speedBps) : 0;
+
+                        uploadSpeed.textContent = `Speed: ${speedMbps.toFixed(1)} Mbps`;
+                        uploadETA.textContent = `ETA: ${formatTime(etaSeconds)}`;
+                    }
+                }
+            };
+
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // Remove empty placeholder if it exists
+                    const emptyPlaceholder = fileList.querySelector('.empty');
+                    if (emptyPlaceholder) {
+                        emptyPlaceholder.remove();
+                    }
+
+                    // Add new file to the list
+                    const newItem = document.createElement("li");
+
+                    const ext = file.name.split('.').pop().toLowerCase();
+                    const imageExts = ['png', 'jpg', 'jpeg', 'gif'];
+                    if (imageExts.includes(ext)) {
+                        const img = document.createElement('img');
+                        img.src = `/thumbnail/${encodeURIComponent(file.name)}`;
+                        img.alt = 'thumbnail';
+                        img.classList.add('thumb');
+                        newItem.appendChild(img);
+                    } else {
+                        const icon = document.createElement('span');
+                        icon.classList.add('file-icon');
+                        icon.textContent = getFileIcon(file.name);
+                        newItem.appendChild(icon);
+                    }
+
+                    const link = document.createElement('a');
+                    link.href = `/download/${encodeURIComponent(file.name)}`;
+                    link.textContent = file.name;
+                    link.title = file.name;
+                    newItem.appendChild(link);
+
+                    const sizeSpan = document.createElement('span');
+                    sizeSpan.classList.add('file-size');
+                    sizeSpan.textContent = formatFileSize(file.size);
+                    newItem.appendChild(sizeSpan);
+
+                    fileList.insertBefore(newItem, fileList.firstChild);
+
+                    uploaded++;
+                    if (uploaded < total) {
+                        // Continue with next file
+                        setTimeout(uploadNext, 100);
+                    } else {
+                        // All files uploaded
+                        finishUpload();
+                    }
+                } else {
+                    console.error('Upload failed for file:', file.name);
+                    uploaded++;
+                    if (uploaded < total) {
+                        setTimeout(uploadNext, 100);
+                    } else {
+                        finishUpload();
+                    }
+                }
+            };
+
+            xhr.onerror = function () {
+                console.error('Upload error for file:', file.name);
+                uploaded++;
+                if (uploaded < total) {
+                    setTimeout(uploadNext, 100);
+                } else {
+                    finishUpload();
+                }
+            };
+
+            xhr.send(formData);
+        };
+
+        const finishUpload = () => {
+            // Hide progress containers
+            progressContainer.classList.remove("visible");
+            topUploadBarContainer.classList.remove("visible");
+            
+            // Reset form
+            isUploading = false;
+            uploadBtn.disabled = false;
+            uploadBtn.textContent = "Upload";
+            input.value = "";
+            filePreview.innerHTML = "";
+            
+            // Reset progress bars
+            progressBar.style.width = "0%";
+            progressBar.textContent = "0%";
+            topUploadBar.style.width = "0%";
+        };
+
+        uploadNext();
+    });
+</script>
+</body>
+</html>
