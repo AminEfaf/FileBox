@@ -367,7 +367,7 @@
         }
 
         .action-modal-header {
-            background: #1976d2;
+            background: #e0e0e0;
             color: white;
             padding: 20px;
             text-align: center;
@@ -444,12 +444,12 @@
         }
 
         .stream-action {
-            background: #e91e63;
+            background: #ff0000;
             color: white;
         }
 
         .stream-action:hover {
-            background: #c2185b;
+            background: #cd0000;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(233,30,99,0.3);
         }
@@ -578,10 +578,6 @@
     <!-- Action Modal -->
     <div id="actionModal" class="action-modal">
         <div class="action-modal-content">
-            <div class="action-modal-header">
-                <h3 class="action-modal-title" id="actionModalTitle">Choose Action</h3>
-                <button class="action-close-btn" onclick="closeActionModal()">&times;</button>
-            </div>
             <div class="action-modal-body">
                 <div class="action-buttons">
                     <button class="action-btn stream-action" id="confirmStreamBtn">
@@ -594,6 +590,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="container">
         <h1>Amin's FileBox</h1>
@@ -702,7 +699,6 @@
         const streamBtn = document.getElementById('confirmStreamBtn');
         const downloadBtn = document.getElementById('confirmDownloadBtn');
         
-        title.textContent = displayName;
         downloadBtn.href = `/download/${encodedFilename}`;
         
         streamBtn.onclick = function() {
