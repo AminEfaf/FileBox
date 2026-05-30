@@ -1,7 +1,12 @@
+#!/usr/bin/env python3
+
 from flask import Flask, request, send_from_directory, render_template, Response
 import os
 from werkzeug.utils import secure_filename
 from PIL import Image
+import pyqrcode
+import socket
+import io
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, 'Shared Files')
@@ -50,18 +55,22 @@ def get_files():
         size = os.path.getsize(filepath)
         thumb_path = os.path.join(app.config['THUMBNAIL_FOLDER'], filename)
         has_thumb = os.path.exists(thumb_path)
-        
-        # Get file extension for icon
-        ext = os.path.splitext(filename.lower())[1][1:]  # Remove the dot
-        
+        ext = os.path.splitext(filename.lower())[1][1:]
+
         files.append({
             'name': filename,
             'size': format_size(size),
             'thumbnail': f"/thumbnail/{filename}" if has_thumb else None,
             'is_video': is_video_file(filename),
-            'extension': ext  # Add extension for consistent icons
+            'extension': ext,
+            'mtime': os.path.getmtime(filepath)  # store modification time
         })
+
+    # Sort newest first
+    files.sort(key=lambda f: f['mtime'], reverse=True)
+
     return files
+
 
 def format_size(size):
     for unit in ['B', 'KB', 'MB', 'GB']:
@@ -70,9 +79,44 @@ def format_size(size):
         size /= 1024
     return f"{size:.1f} TB"
 
+def get_local_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
+
 @app.route('/')
 def index():
     return render_template('index.html', files=get_files())
+
+@app.route('/qr')
+def qr_code_route():
+    ip = get_local_ip()
+    port = 8000 
+    url = f"http://{ip}:{port}"
+
+    qr = pyqrcode.create(url)
+    buffer = io.BytesIO()
+    qr.png(buffer, scale=6)
+    buffer.seek(0)
+    img_str = base64.b64encode(buffer.getvalue()).decode()
+
+    return Response(buffer, mimetype='image/png')
+
+@app.route('/qr_modal')
+def qr_modal():
+    ip = get_local_ip()
+    port = 8000
+    url = f"http://{ip}:{port}"
+
+    qr = pyqrcode.create(url)
+    buffer = io.BytesIO()
+    qr.png(buffer, scale=6)
+    buffer.seek(0)
+    img_str = base64.b64encode(buffer.getvalue()).decode()
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
@@ -164,3 +208,11 @@ def serve_thumbnail(filename):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
+    
+    
+    
+    
+    
+    
+
+

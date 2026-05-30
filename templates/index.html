@@ -48,28 +48,6 @@
             margin-bottom: 20px;
         }
 
-        /* Global top upload bar */
-        #topUploadBarContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 4px;
-            width: 100%;
-            background: rgba(0,0,0,0.06);
-            transform: translateY(-100%);
-            transition: transform 0.25s ease;
-            z-index: 9999;
-        }
-        #topUploadBarContainer.visible {
-            transform: translateY(0);
-        }
-        #topUploadBar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, #4caf50, #66bb6a);
-            transition: width 0.15s ease;
-        }
-
         /* Upload controls */
         .upload-box { 
             margin: 20px 0; 
@@ -570,10 +548,6 @@
     </style>
 </head>
 <body>
-    <!-- Global progress bar -->
-    <div id="topUploadBarContainer">
-        <div id="topUploadBar"></div>
-    </div>
 
     <!-- Action Modal -->
     <div id="actionModal" class="action-modal">
@@ -583,7 +557,7 @@
                     <button class="action-btn stream-action" id="confirmStreamBtn">
                         Stream
                     </button>
-                    <a class="action-btn download-action" id="confirmDownloadBtn">
+                    <a class="action-btn download-action" id="confirmDownloadBtn" onclick="closeActionModal()">
                         Download
                     </a>
                 </div>
@@ -605,7 +579,7 @@
                         required
                         multiple
                     />
-                    Select File(s)
+                    Select File
                 </label>
                 <button type="submit" id="uploadBtn">Upload</button>
             </form>
@@ -626,7 +600,10 @@
             </div>
         </div>
 
-        <h2>Available Files</h2>
+        
+        <br>
+        <hr>
+
         <ul class="file-list" id="fileList">
             {% if files %}
                 {% for file in files %}
@@ -681,8 +658,6 @@
     const uploadBtn = document.getElementById("uploadBtn");
     const progressContainer = document.getElementById("progressContainer");
     const progressBar = document.getElementById("progressBar");
-    const topUploadBarContainer = document.getElementById("topUploadBarContainer");
-    const topUploadBar = document.getElementById("topUploadBar");
     const filePreview = document.getElementById("filePreview");
     const currentFile = document.getElementById("currentFile");
     const fileProgress = document.getElementById("fileProgress");
@@ -895,7 +870,6 @@
         
         // Show progress containers
         progressContainer.classList.add("visible");
-        topUploadBarContainer.classList.add("visible");
 
         let uploaded = 0;
         const total = files.length;
@@ -926,7 +900,6 @@
                     // Update progress bars
                     progressBar.style.width = filePercent + "%";
                     progressBar.textContent = filePercent + "%";
-                    topUploadBar.style.width = overallPercent + "%";
 
                     // Calculate speed and ETA
                     if (timeElapsed > 0) {
@@ -979,7 +952,6 @@
         const finishUpload = () => {
             // Hide progress containers
             progressContainer.classList.remove("visible");
-            topUploadBarContainer.classList.remove("visible");
             
             // Reset form
             isUploading = false;
@@ -991,7 +963,6 @@
             // Reset progress bars
             progressBar.style.width = "0%";
             progressBar.textContent = "0%";
-            topUploadBar.style.width = "0%";
         };
 
         uploadNext();
