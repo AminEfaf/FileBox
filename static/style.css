@@ -118,7 +118,7 @@ input[type="file"] { display: none; }
 
 /* ── Progress bar ─────────────────────────────────────────────────────────── */
 
-rogress-container {
+.progress-container {
     margin: 20px 0;
     display: none;
 }
