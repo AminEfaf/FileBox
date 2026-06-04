@@ -1,172 +1,187 @@
-# FileBox
-FileBox is a simple, elegant, and lightweight file sharing platform built with Flask. It provides an intuitive interface for uploading, storing, and sharing files with automatic thumbnail generation for images, video streaming capabilities, and real-time upload progress tracking.
+<div align="center">
+
+# 📦 FileBox
+
+**A lightweight, self-hosted file sharing platform built with Flask.**  
+Upload, store, and share files instantly — with video streaming, image thumbnails, and QR code access.
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-2.3%2B-lightgrey?logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+![FileBox Screenshot](https://github.com/user-attachments/assets/93a77c9e-ab5d-410b-88ac-c3b65748aa4b)
+
+</div>
 
 ---
 
-## Project Overview
-FileBox offers a comprehensive file sharing solution designed for:
-- **Individual users** looking for a simple file storage solution
-- **Teams** needing quick file sharing capabilities  
-- **Developers** wanting a lightweight alternative to complex file hosting services
-- **Educational purposes** demonstrating modern web development practices
+## What is FileBox?
 
-This project focuses on providing a clean, responsive UI/UX with robust backend functionality for file management, featuring drag-and-drop uploads, real-time progress tracking, automatic thumbnail generation, and in-browser video streaming.
+FileBox is a minimal, self-hosted file sharing server you run on your local network. No cloud, no accounts, no limits. Open the browser on any device on the same network, upload files, and access them instantly — including streaming videos directly in the browser.
+
+**Designed for:** home networks, small teams, developers, and anyone who wants a simple alternative to cloud storage for local sharing.
 
 ---
 
 ## Features
 
-### Core Functionality
-1. **Multi-File Upload Support**
-   - Real-time upload progress with speed and ETA
-   
-2. **Smart File Management**
-   - Automatic duplicate file handling with incremental naming
-   - Secure filename sanitization
-
-3. **Image Processing**
-   - Automatic thumbnail generation for images
-   - Support for multiple image formats (PNG, JPG, JPEG, GIF, BMP, WebP)
-   - Optimized thumbnail storage
-
-4. **Video Streaming (NEW!)**
-   - In-browser video streaming for all major video formats
-   - Support for MP4, AVI, MOV, WMV, FLV, WebM, MKV, and more
-   - Range request support for smooth seeking and playback
-   - Modal video player with full controls
-   - Choose between streaming or downloading videos
-
-5. **Responsive Design**
-   - Mobile-first approach
-   - Tablet and desktop optimized layouts
-   - Modern CSS with smooth animations
-
-### Security & Performance
-- Secure file upload handling with Werkzeug
-- Input sanitization and validation
-- Efficient thumbnail generation with PIL/Pillow
-- HTTP range request support for efficient video streaming
+- **Multi-file upload** with real-time progress, speed, and ETA
+- **Video streaming** — watch MP4, MKV, AVI, MOV, WebM and more directly in the browser
+- **Image thumbnails** — auto-generated previews for PNG, JPG, GIF, WebP, BMP
+- **QR code access** — click the title to get a QR code; scan from any phone to open instantly
+- **Smart duplicate handling** — auto-renames files instead of overwriting
+- **Secure filenames** — sanitized with Werkzeug before saving
+- **Responsive design** — works on desktop, tablet, and mobile
+- **Zero config** — runs out of the box with a single command
 
 ---
 
 ## Quick Start
 
-### Prerequisites
-- Python 3.8 or higher
-- pip (Python package installer)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/AminEfaf/FileBox.git
-   cd FileBox
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install flask pillow werkzeug
-   ```
-
-3. **Create virtual environment** (recommended)
-   ```bash
-   python -m venv venv
-   
-   # On Windows
-   venv\Scripts\activate
-   
-   # On macOS/Linux
-   source venv/bin/activate
-   ```
-
-4. **Run the application**
-   ```bash
-   python Server.py
-   ```
-
-5. **Access the application**
-   - Open your browser and navigate to: `http://localhost:8000`
-
-### Production Deployment
-
-For production deployment using Gunicorn:
+### Option 1 — One-click launch (recommended)
 
 ```bash
+# macOS / Linux
+chmod +x Start.sh && ./Start.sh
+
+# Windows — double-click Start.bat
+```
+
+The script will automatically create a virtual environment, install dependencies, and open your browser.
+
+### Option 2 — Manual setup
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/AminEfaf/FileBox.git
+cd FileBox
+```
+
+**2. Create a virtual environment**
+```bash
+python3 -m venv venv
+
+# macOS / Linux
+source venv/bin/activate
+
+# Windows
+venv\Scripts\activate
+```
+
+**3. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+**4. Run**
+```bash
+python3 Server.py
+```
+
+**5. Open** `http://localhost:8000` in your browser.
+
+---
+
+## Accessing from other devices
+
+FileBox binds to `0.0.0.0`, so any device on the same network can access it.
+
+1. Find your machine's local IP — it's shown in the terminal on startup, or click the **FileBox** title in the app for a QR code
+2. On any phone or device connected to the same Wi-Fi, open `http://<your-ip>:8000`
+3. Or just scan the QR code
+
+---
+
+## Production deployment
+
+For a more stable server using Gunicorn (Linux/macOS):
+
+```bash
+pip install gunicorn
 gunicorn -w 4 -b 0.0.0.0:8000 Server:app
 ```
----
 
-## Screenshots
-
-### Desktop Interface
-<img width="2880" height="1404" alt="Screenshot 2025-07-31 at 11 10 21" src="https://github.com/user-attachments/assets/93a77c9e-ab5d-410b-88ac-c3b65748aa4b" />
-*Clean and modern desktop interface with video streaming support*
-
-### Mobile Interface  
-<img src="https://github.com/user-attachments/assets/8497aaa2-2ebf-4960-a3f5-2d201424a8c4" alt="Mobile UI" width="300" />
-<p><em>Responsive mobile design optimized for touch interactions</em></p>
-
-### Upload Progress
-<img src="https://github.com/user-attachments/assets/8a50015b-59ee-4f13-a944-dc505f427720" alt="Upload progress" width="300" />
-<p><em>Real-time upload progress with speed and ETA indicators</em></p>
+> **Note:** FileBox is designed for trusted local networks. It does not include authentication. Do not expose it to the public internet without adding proper access control.
 
 ---
 
-## Technical Details
+## Project structure
 
-### Backend (Flask)
-- **Framework**: Flask 3.0.0
-- **File Handling**: Werkzeug utilities for secure uploads
-- **Image Processing**: Pillow for thumbnail generation
-- **Video Streaming**: HTTP range request support for efficient streaming
-- **Server**: Built-in development server / Gunicorn for production
-
-### Frontend
-- **Styling**: Modern CSS3 with Flexbox and Grid
-- **JavaScript**: Vanilla ES6+ with class-based architecture
-- **Video Player**: HTML5 video with custom modal interface
-- **Responsive Design**: Mobile-first CSS media queries
-- **Icons**: Unicode emoji icons for universal compatibility
-
-### File Management
-- **Upload Directory**: `Shared Files/` (auto-created)
-- **Thumbnails**: `thumbnails/` (auto-created)
-- **Supported Formats**: All file types with special handling for images and videos
-- **Video Formats**: MP4, AVI, MOV, WMV, FLV, WebM, MKV, M4V, 3GP, OGV, TS, M2TS, MTS, VOB, ASF, RM, RMVB, DivX, XviD
-
----
-
-## Configuration
-
-### Environment Variables
-```bash
-# Optional: Set custom upload folder
-UPLOAD_FOLDER=/path/to/uploads
+```
+FileBox/
+├── Server.py              # Flask backend
+├── requirements.txt       # Python dependencies
+├── Start.sh               # One-click launcher (macOS/Linux)
+├── Start.bat              # One-click launcher (Windows)
+├── templates/
+│   └── index.html         # Main UI template
+├── static/
+│   ├── style.css          # All styles
+│   └── main.js            # All JavaScript
+├── Shared Files/          # Uploaded files (auto-created)
+└── thumbnails/            # Generated thumbnails (auto-created)
 ```
 
-### Customization Options
-- Update thumbnail size in `create_thumbnail()` function
-- Customize video streaming buffer size in `/stream/<filename>` route
-- Add new file type icons in the JavaScript `getFileIcon()` function
-- Modify video formats support in `is_video_file()` function
+---
+
+## Supported formats
+
+| Type | Formats |
+|------|---------|
+| **Video** | MP4, MKV, AVI, MOV, WMV, FLV, WebM, M4V, 3GP, OGV, TS, MTS, VOB, ASF, RM, RMVB, DivX, XviD |
+| **Image** | PNG, JPG, JPEG, GIF, BMP, WebP |
+| **Other** | Any file type can be uploaded and downloaded |
 
 ---
 
-## Video Streaming Features
+## Technical details
 
-- **Format Support**: Supports all major video formats
-- **Efficient Streaming**: Uses HTTP range requests for optimized streaming
-- **Responsive Player**: Full-featured video player that works on all devices
-- **Dual Action**: Users can choose to either stream videos in-browser or download them
-- **Seek Support**: Full seeking capabilities within streamed videos
-- **Modal Interface**: Clean, distraction-free video viewing experience
+| Layer | Stack |
+|-------|-------|
+| Backend | Python 3.8+, Flask 2.3+, Werkzeug |
+| Image processing | Pillow |
+| QR code | pyqrcode + pypng |
+| Frontend | Vanilla HTML5, CSS3, ES6+ JavaScript |
+| Video streaming | HTTP range requests (RFC 7233) |
+| Server | Flask dev server / Gunicorn |
+
+---
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Some ideas for contributions:
+- Password protection / access tokens
+- File deletion from the UI
+- Drag-and-drop upload zone
+- Dark mode
+- Audio player (like the video player)
+- Docker support
+
+---
+
+## AI Assistance Disclosure
+
+This project was developed with the assistance of [Claude](https://claude.ai) (Anthropic) for code generation, debugging, refactoring, and documentation. All code has been reviewed, tested, and is maintained by the author. The use of AI assistance is disclosed in the interest of transparency.
+
+---
+
+## License
+
+[MIT](LICENSE) — free to use, modify, and distribute.
 
 ---
 
 ## Author
 
-**Mohammad Amin Efaf**
-- GitHub: [@aminefaf](https://github.com/aminefaf)
-- Email: AminEfaf.82f@gmail.com
+**Mohammad Amin Efaf**  
+GitHub: [@AminEfaf](https://github.com/AminEfaf)  
+Email: AminEfaf.82f@gmail.com
 
 ---
+
+<div align="center">
+  <sub>If FileBox is useful to you, consider giving it a ⭐ — it helps others find it.</sub>
+</div>

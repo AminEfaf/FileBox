@@ -319,16 +319,6 @@ input[type="file"] { display: none; }
     text-align: center;
 }
 
-.close-link {
-    display: block;
-    margin-top: 12px;
-    font-size: 13px;
-    color: #f58383;
-    cursor: pointer;
-    text-decoration: none;
-}
-.close-link:hover { color: #da1a1a; }
-
 .qr-modal-body {
     padding: 20px 20px 22px;
 }
@@ -344,7 +334,7 @@ input[type="file"] { display: none; }
 
 .qr-url {
     font-size: 12px;
-    color: #888;
+    color: #353535;
     word-break: break-all;
     margin: 0 0 16px;
     font-family: monospace;
@@ -392,7 +382,7 @@ input[type="file"] { display: none; }
 .close-btn {
     background: none;
     border: none;
-    color: #f58383;
+    color: rgba(255,255,255,0.7);
     font-size: 22px;
     cursor: pointer;
     padding: 0;
@@ -403,10 +393,22 @@ input[type="file"] { display: none; }
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, color 0.2s ease;
     flex-shrink: 0;
 }
-.close-btn:hover { background:  #ffdede; }
+.close-btn:hover {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+}
+
+/* QR modal is white — needs dark × */
+.qr-modal-content .close-btn {
+    color: #999;
+}
+.qr-modal-content .close-btn:hover {
+    background: rgba(0,0,0,0.06);
+    color: #333;
+}
 
 /* ── Action modal (stream vs download) ───────────────────────────────────── */
 .action-modal-content {
@@ -425,11 +427,11 @@ input[type="file"] { display: none; }
     display: block;
     margin-top: 12px;
     font-size: 13px;
-    color: #f58383;
+    color: #aaa;
     cursor: pointer;
     text-decoration: none;
 }
-.close-link:hover { color: #da1a1a; }
+.close-link:hover { color: #555; }
 
 @keyframes modalSlideIn {
     from { opacity: 0; transform: translateY(-20px) scale(0.98); }

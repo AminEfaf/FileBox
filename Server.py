@@ -188,7 +188,7 @@ def stream_video(filename):
                 'Content-Range': f'bytes {byte_start}-{byte_end}/{file_size}',
                 'Accept-Ranges': 'bytes',
                 'Content-Length': str(content_length),
-                'Content-Type': 'application/octet-stream',
+                'Content-Type': 'video/mp4',
             }
         )
 
@@ -204,7 +204,7 @@ def stream_video(filename):
         generate_full(),
         headers={
             'Content-Length': str(file_size),
-            'Content-Type': 'application/octet-stream',
+            'Content-Type': 'video/mp4',
             'Accept-Ranges': 'bytes',
         }
     )
