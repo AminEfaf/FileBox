@@ -9,9 +9,6 @@ Upload, store, and share files instantly — with video streaming, image thumbna
 [![Flask](https://img.shields.io/badge/Flask-2.3%2B-lightgrey?logo=flask&logoColor=white)](https://flask.palletsprojects.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-
-![FileBox Screenshot](https://github.com/user-attachments/assets/93a77c9e-ab5d-410b-88ac-c3b65748aa4b)
-
 </div>
 
 ---
@@ -93,19 +90,6 @@ FileBox binds to `0.0.0.0`, so any device on the same network can access it.
 
 ---
 
-## Production deployment
-
-For a more stable server using Gunicorn (Linux/macOS):
-
-```bash
-pip install gunicorn
-gunicorn -w 4 -b 0.0.0.0:8000 Server:app
-```
-
-> **Note:** FileBox is designed for trusted local networks. It does not include authentication. Do not expose it to the public internet without adding proper access control.
-
----
-
 ## Project structure
 
 ```
@@ -125,16 +109,6 @@ FileBox/
 
 ---
 
-## Supported formats
-
-| Type | Formats |
-|------|---------|
-| **Video** | MP4, MKV, AVI, MOV, WMV, FLV, WebM, M4V, 3GP, OGV, TS, MTS, VOB, ASF, RM, RMVB, DivX, XviD |
-| **Image** | PNG, JPG, JPEG, GIF, BMP, WebP |
-| **Other** | Any file type can be uploaded and downloaded |
-
----
-
 ## Technical details
 
 | Layer | Stack |
@@ -145,20 +119,6 @@ FileBox/
 | Frontend | Vanilla HTML5, CSS3, ES6+ JavaScript |
 | Video streaming | HTTP range requests (RFC 7233) |
 | Server | Flask dev server / Gunicorn |
-
----
-
-## Contributing
-
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Some ideas for contributions:
-- Password protection / access tokens
-- File deletion from the UI
-- Drag-and-drop upload zone
-- Dark mode
-- Audio player (like the video player)
-- Docker support
 
 ---
 
@@ -178,7 +138,7 @@ This project was developed with the assistance of [Claude](https://claude.ai) (A
 
 **Mohammad Amin Efaf**  
 GitHub: [@AminEfaf](https://github.com/AminEfaf)  
-Email: AminEfaf.82f@gmail.com
+Email: Amin.Efaf@outlook.com
 
 ---
 
