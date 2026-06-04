@@ -17,7 +17,7 @@ Upload, store, and share files instantly — with video streaming, image thumbna
 
 FileBox is a minimal, self-hosted file sharing server you run on your local network. No cloud, no accounts, no limits. Open the browser on any device on the same network, upload files, and access them instantly — including streaming videos directly in the browser.
 
-**Designed for:** home networks, small teams, developers, and anyone who wants a simple alternative to cloud storage for local sharing..
+**Designed for:** home networks, small teams, developers, and anyone who wants a simple alternative to cloud storage for local sharing.
 
 ---
 
