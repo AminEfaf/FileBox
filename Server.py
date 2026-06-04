@@ -137,11 +137,18 @@ def upload_file():
 
 @app.route('/download/<path:filename>')
 def download_file(filename):
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid filename", 400
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if not os.path.exists(filepath):
+        return "File not found", 404
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
 @app.route('/stream/<path:filename>')
 def stream_video(filename):
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid filename", 400
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     if not os.path.exists(filepath):
         return "File not found", 404
@@ -181,7 +188,7 @@ def stream_video(filename):
                 'Content-Range': f'bytes {byte_start}-{byte_end}/{file_size}',
                 'Accept-Ranges': 'bytes',
                 'Content-Length': str(content_length),
-                'Content-Type': 'video/mp4',
+                'Content-Type': 'application/octet-stream',
             }
         )
 
@@ -197,7 +204,7 @@ def stream_video(filename):
         generate_full(),
         headers={
             'Content-Length': str(file_size),
-            'Content-Type': 'video/mp4',
+            'Content-Type': 'application/octet-stream',
             'Accept-Ranges': 'bytes',
         }
     )
@@ -205,6 +212,11 @@ def stream_video(filename):
 
 @app.route('/thumbnail/<path:filename>')
 def serve_thumbnail(filename):
+    if '..' in filename or filename.startswith('/'):
+        return "Invalid filename", 400
+    thumb_path = os.path.join(app.config['THUMBNAIL_FOLDER'], filename)
+    if not os.path.exists(thumb_path):
+        return "Thumbnail not found", 404
     return send_from_directory(app.config['THUMBNAIL_FOLDER'], filename)
 
 
